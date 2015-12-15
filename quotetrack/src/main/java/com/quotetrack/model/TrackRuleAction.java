@@ -1,6 +1,6 @@
 package com.quotetrack.model;
 
-public class TrackRuleAction {
+public abstract class TrackRuleAction {
     
     private TrackRuleActionType trackRuleActionType;
 
@@ -11,5 +11,7 @@ public class TrackRuleAction {
     public void setTrackRuleActionType(TrackRuleActionType trackRuleActionType) {
         this.trackRuleActionType = trackRuleActionType;
     }
+    
+    abstract public void  perform();
     
 }

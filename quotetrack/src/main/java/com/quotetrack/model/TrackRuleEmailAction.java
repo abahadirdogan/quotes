@@ -10,5 +10,10 @@ public class TrackRuleEmailAction extends TrackRuleAction {
     public String getTargetEmail() {
         return targetEmail;
     }
+
+    @Override
+    public void perform() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
 }
