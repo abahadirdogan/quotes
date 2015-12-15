@@ -1,11 +1,11 @@
 package com.quotetrack.model;
 
-public class TrackRule {
+public class FeedRule {
     private String ID;
     private User user;
     private String symbol;
-    private TrackRuleCriteria trackRuleCriteria;
-    private TrackRuleAction trackRuleAction;
+    private FeedRuleCriteria trackRuleCriteria;
+    private FeedRuleAction trackRuleAction;
 
     public String getID() {
         return ID;
@@ -31,19 +31,19 @@ public class TrackRule {
         this.symbol = symbol;
     }
 
-    public TrackRuleCriteria getTrackRuleCriteria() {
+    public FeedRuleCriteria getTrackRuleCriteria() {
         return trackRuleCriteria;
     }
 
-    public void setTrackRuleCriteria(TrackRuleCriteria trackRuleCriteria) {
+    public void setTrackRuleCriteria(FeedRuleCriteria trackRuleCriteria) {
         this.trackRuleCriteria = trackRuleCriteria;
     }
 
-    public TrackRuleAction getTrackRuleAction() {
+    public FeedRuleAction getTrackRuleAction() {
         return trackRuleAction;
     }
 
-    public void setTrackRuleAction(TrackRuleAction trackRuleAction) {
+    public void setTrackRuleAction(FeedRuleAction trackRuleAction) {
         this.trackRuleAction = trackRuleAction;
     }
     

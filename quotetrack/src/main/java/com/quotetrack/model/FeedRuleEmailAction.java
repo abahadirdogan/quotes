@@ -1,9 +1,9 @@
 package com.quotetrack.model;
 
-public class TrackRuleEmailAction extends TrackRuleAction {
+public class FeedRuleEmailAction extends FeedRuleAction {
     private final String targetEmail;
     
-    public TrackRuleEmailAction(String targetEmail) {
+    public FeedRuleEmailAction(String targetEmail) {
         this.targetEmail = targetEmail;
     }
 

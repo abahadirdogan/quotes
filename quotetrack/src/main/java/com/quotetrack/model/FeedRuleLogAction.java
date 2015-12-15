@@ -1,6 +1,6 @@
 package com.quotetrack.model;
 
-public class TrackRuleLogAction extends TrackRuleAction {
+public class FeedRuleLogAction extends FeedRuleAction {
 
     @Override
     public void perform() {

@@ -1,6 +1,6 @@
 package com.quotetrack.model;
 
-public class TrackRuleInBandCriteria extends TrackRuleCriteria {
+public class FeedRuleInBandCriteria extends FeedRuleCriteria {
 
     private double lowerLimit;
     private double upperLimit;

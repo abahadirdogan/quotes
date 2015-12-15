@@ -1,12 +1,12 @@
 package com.quotetrack.model;
 
-public enum TrackRuleActionType {
+public enum FeedRuleActionType {
     LOG(0),
     EMAIL(1);
     
     int value;
     
-    TrackRuleActionType(int value) {
+    FeedRuleActionType(int value) {
         this.value = value;
     }
     

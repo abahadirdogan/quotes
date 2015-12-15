@@ -1,15 +1,15 @@
 package com.quotetrack.server;
 
-import com.quotetrack.model.TrackRuleCollection;
+import com.quotetrack.model.FeedRuleCollection;
 
 public class Server {
-    private final TrackRuleCollection rules;
+    private final FeedRuleCollection rules;
     
-    public Server(TrackRuleCollection rules) {
+    public Server(FeedRuleCollection rules) {
         this.rules = rules;
     }
 
-    public TrackRuleCollection getRules() {
+    public FeedRuleCollection getRules() {
         return rules;
     }
     

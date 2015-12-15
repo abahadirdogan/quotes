@@ -1,6 +1,6 @@
 package com.quotetrack.model;
 
-public abstract class TrackRuleCriteria {
+public abstract class FeedRuleCriteria {
     
     abstract boolean testCriteria(final Quote quote);
     
