@@ -11,7 +11,7 @@ public class FeedRuleCollection {
         this.rules = new ConcurrentHashMap<>();
     }
     
-    Collection<FeedRule> getRulesBySymbol(final String symbol) {
+    public Collection<FeedRule> getRulesBySymbol(final String symbol) {
         if (rules.get(symbol)==null)
             return new ArrayList<>();
         return rules.get(symbol).values();

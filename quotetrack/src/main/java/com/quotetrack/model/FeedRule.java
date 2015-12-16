@@ -4,8 +4,8 @@ public class FeedRule {
     private String ID;
     private User user;
     private String symbol;
-    private FeedRuleCriteria trackRuleCriteria;
-    private FeedRuleAction trackRuleAction;
+    private FeedRuleCriteria feedRuleCriteria;
+    private FeedRuleAction feedRuleAction;
 
     public String getID() {
         return ID;
@@ -31,20 +31,29 @@ public class FeedRule {
         this.symbol = symbol;
     }
 
-    public FeedRuleCriteria getTrackRuleCriteria() {
-        return trackRuleCriteria;
+    public FeedRuleCriteria getFeedRuleCriteria() {
+        return feedRuleCriteria;
     }
 
-    public void setTrackRuleCriteria(FeedRuleCriteria trackRuleCriteria) {
-        this.trackRuleCriteria = trackRuleCriteria;
+    public void setFeedRuleCriteria(FeedRuleCriteria trackRuleCriteria) {
+        this.feedRuleCriteria = trackRuleCriteria;
     }
 
-    public FeedRuleAction getTrackRuleAction() {
-        return trackRuleAction;
+    public FeedRuleAction getFeedRuleAction() {
+        return feedRuleAction;
     }
 
-    public void setTrackRuleAction(FeedRuleAction trackRuleAction) {
-        this.trackRuleAction = trackRuleAction;
+    public void setFeedRuleAction(FeedRuleAction trackRuleAction) {
+        this.feedRuleAction = trackRuleAction;
+    }
+    
+    public boolean match(final Quote quote) {
+        if (!quote.getSymbol().equals(symbol))
+            return false;
+        if (!feedRuleCriteria.testCriteria(quote))
+            return false;
+        return true;
+        
     }
     
 }
