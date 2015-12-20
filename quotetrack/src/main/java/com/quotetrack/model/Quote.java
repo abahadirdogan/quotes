@@ -6,6 +6,13 @@ public class Quote {
     private double ask;
     private long timestamp;
 
+    public Quote(String symbol, double bid, double ask, long timestamp) {
+        this.symbol = symbol;
+        this.bid = bid;
+        this.ask = ask;
+        this.timestamp = timestamp;
+    }
+
     public String getSymbol() {
         return symbol;
     }
@@ -37,4 +44,10 @@ public class Quote {
     public void setTimestamp(long timestamp) {
         this.timestamp = timestamp;
     }
+
+    @Override
+    public String toString() {
+        return "Quote{" + "symbol=" + symbol + ", bid=" + bid + ", ask=" + ask + ", timestamp=" + timestamp + '}';
+    }
+    
 }

@@ -5,6 +5,12 @@ public class User {
     private String email;
     private String country;
 
+    public User(String name, String email, String country) {
+        this.name = name;
+        this.email = email;
+        this.country = country;
+    }
+
     public String getName() {
         return name;
     }
@@ -27,6 +33,11 @@ public class User {
 
     public void setCountry(String country) {
         this.country = country;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" + "name=" + name + ", email=" + email + ", country=" + country + '}';
     }
     
 }

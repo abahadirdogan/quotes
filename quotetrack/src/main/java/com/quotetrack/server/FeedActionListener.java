@@ -9,6 +9,6 @@ import com.quotetrack.model.FeedRule;
 import com.quotetrack.model.Quote;
 
 public interface FeedActionListener {
-    public void handleAction(Quote quote, FeedRule rule);
+    public void handleAction(final Quote quote, final FeedRule rule);
     
 }

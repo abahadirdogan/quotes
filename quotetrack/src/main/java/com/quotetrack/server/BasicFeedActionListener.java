@@ -17,7 +17,7 @@ public class BasicFeedActionListener implements FeedActionListener {
 
     @Override
     public void handleAction(Quote quote, FeedRule rule) {
-        executor.submit(()->rule.getFeedRuleAction().perform());
+        executor.submit(()->rule.getFeedRuleAction().perform(quote, rule));
     }
     
 }
