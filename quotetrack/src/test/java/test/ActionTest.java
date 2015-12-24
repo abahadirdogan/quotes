@@ -22,6 +22,10 @@ import com.quotetrack.server.FeedManager;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Date;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -53,24 +57,52 @@ public class ActionTest {
     @After
     public void tearDown() {
     }
-
-    // TODO add test methods here.
-    // The methods must be annotated with annotation @Test. For example:
-    //
-    // @Test
-    // public void hello() {}
     
     @Test
-    public void hello() {
+    public void ruleMatch() {
+        CountDownLatch latch = new CountDownLatch(1);
         Symbol eurusd = new Symbol("EURUSD", 5, "EUR", "USD");
         FeedRuleCriteria rc = new FeedRuleInBandCriteria(1.2, 1.3, Side.BUY);
-        FeedRuleAction ra = new FeedRuleLogAction(FeedRuleActionType.LOG, Duration.ofSeconds(60), Date.from(Instant.now().minusSeconds(120)));
+        //FeedRuleAction ra = new FeedRuleLogAction(FeedRuleActionType.LOG, Duration.ofSeconds(60), Date.from(Instant.now().minusSeconds(120)));
+        FeedRuleTestAction rrr = new FeedRuleTestAction(latch, FeedRuleActionType.NONE, Duration.ofSeconds(60), Date.from(Instant.now().minusSeconds(120)));
         User u = new User("ali", "veli", "TR");
-        FeedRule r = new FeedRule("R1", u, eurusd, rc, ra);
+        FeedRule r = new FeedRule("R1", u, eurusd, rc, rrr);
         FeedRuleCollection frc = new FeedRuleCollection();
         frc.addRule(r);
         FeedManager fm = new FeedManager(frc);
         fm.addFeedActionListener(new BasicFeedActionListener());
-        fm.putFeed(new Quote("EURUSD", 1.1, 1.25, System.currentTimeMillis()));
+        Quote q = new Quote("EURUSD", 1.1, 1.25, System.currentTimeMillis());
+        fm.putFeed(q);
+        fm.checkRules(q);
+        try {
+            latch.await();
+        } catch (InterruptedException ex) {
+            Logger.getLogger(ActionTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        assertEquals(rrr.counter.getCount(), 0);
+    }
+    
+    @Test
+    public void ruleMatch2() {
+        CountDownLatch latch = new CountDownLatch(1);
+        Symbol eurusd = new Symbol("EURUSD", 5, "EUR", "USD");
+        FeedRuleCriteria rc = new FeedRuleInBandCriteria(1.2, 1.3, Side.SELL);
+        //FeedRuleAction ra = new FeedRuleLogAction(FeedRuleActionType.LOG, Duration.ofSeconds(60), Date.from(Instant.now().minusSeconds(120)));
+        FeedRuleTestAction rrr = new FeedRuleTestAction(latch, FeedRuleActionType.NONE, Duration.ofSeconds(60), Date.from(Instant.now().minusSeconds(120)));
+        User u = new User("ali", "veli", "TR");
+        FeedRule r = new FeedRule("R1", u, eurusd, rc, rrr);
+        FeedRuleCollection frc = new FeedRuleCollection();
+        frc.addRule(r);
+        FeedManager fm = new FeedManager(frc);
+        fm.addFeedActionListener(new BasicFeedActionListener());
+        Quote q = new Quote("EURUSD", 1.1, 1.25, System.currentTimeMillis());
+        fm.putFeed(q);
+        fm.checkRules(q);
+        try {
+            latch.await(5, TimeUnit.SECONDS);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(ActionTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        assertEquals(rrr.counter.getCount(), 1);
     }
 }

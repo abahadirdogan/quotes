@@ -5,6 +5,7 @@ import com.quotetrack.model.FeedRuleCollection;
 import com.quotetrack.model.Quote;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,7 +24,6 @@ public class FeedManager {
     
     public void putFeed(final Quote quote) {
         quotes.put(quote.getSymbol(), quote);
-        checkRules(quote);
     }
     
     public Quote getQuote(String symbol) {
@@ -38,7 +38,7 @@ public class FeedManager {
         actionListeners.remove(listener);
     }
 
-    private void checkRules(final Quote quote) {
+    public void checkRules(final Quote quote) {
         Collection<FeedRule> matchingRules = rules.getRulesBySymbol(quote.getSymbol()).stream().filter(r -> r.match(quote)).collect(Collectors.toList());
         for (FeedRule rule : matchingRules) {
             for (FeedActionListener actionListener : actionListeners) {

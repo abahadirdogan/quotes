@@ -1,8 +1,9 @@
 package com.quotetrack.model;
 
 public enum FeedRuleActionType {
-    LOG(0),
-    EMAIL(1);
+    NONE(0),
+    LOG(1),
+    EMAIL(2);
     
     int value;
     
