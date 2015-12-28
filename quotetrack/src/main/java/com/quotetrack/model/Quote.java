@@ -1,5 +1,7 @@
 package com.quotetrack.model;
 
+import java.util.StringTokenizer;
+
 public class Quote {
     private String symbol;
     private double bid;
@@ -44,7 +46,16 @@ public class Quote {
     public void setTimestamp(long timestamp) {
         this.timestamp = timestamp;
     }
-
+    
+    public static Quote parse(String text) {
+        String str[] = text.split(":");
+        Quote q = new Quote(str[0],
+                Double.parseDouble(str[1]),
+                Double.parseDouble(str[2]),
+                Long.parseLong(str[3]));
+        return q;
+    }
+    
     @Override
     public String toString() {
         return "Quote{" + "symbol=" + symbol + ", bid=" + bid + ", ask=" + ask + ", timestamp=" + timestamp + '}';

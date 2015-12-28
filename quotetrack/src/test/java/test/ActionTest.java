@@ -63,7 +63,6 @@ public class ActionTest {
         CountDownLatch latch = new CountDownLatch(1);
         Symbol eurusd = new Symbol("EURUSD", 5, "EUR", "USD");
         FeedRuleCriteria rc = new FeedRuleInBandCriteria(1.2, 1.3, Side.BUY);
-        //FeedRuleAction ra = new FeedRuleLogAction(FeedRuleActionType.LOG, Duration.ofSeconds(60), Date.from(Instant.now().minusSeconds(120)));
         FeedRuleTestAction rrr = new FeedRuleTestAction(latch, FeedRuleActionType.NONE, Duration.ofSeconds(60), Date.from(Instant.now().minusSeconds(120)));
         User u = new User("ali", "veli", "TR");
         FeedRule r = new FeedRule("R1", u, eurusd, rc, rrr);
@@ -80,6 +79,15 @@ public class ActionTest {
             Logger.getLogger(ActionTest.class.getName()).log(Level.SEVERE, null, ex);
         }
         assertEquals(rrr.counter.getCount(), 0);
+        
+        fm.putFeed(q);
+        fm.checkRules(q);
+        try {
+            latch.await(5, TimeUnit.SECONDS);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(ActionTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        assertEquals(rrr.counter.getCount(), 0);
     }
     
     @Test
@@ -87,7 +95,6 @@ public class ActionTest {
         CountDownLatch latch = new CountDownLatch(1);
         Symbol eurusd = new Symbol("EURUSD", 5, "EUR", "USD");
         FeedRuleCriteria rc = new FeedRuleInBandCriteria(1.2, 1.3, Side.SELL);
-        //FeedRuleAction ra = new FeedRuleLogAction(FeedRuleActionType.LOG, Duration.ofSeconds(60), Date.from(Instant.now().minusSeconds(120)));
         FeedRuleTestAction rrr = new FeedRuleTestAction(latch, FeedRuleActionType.NONE, Duration.ofSeconds(60), Date.from(Instant.now().minusSeconds(120)));
         User u = new User("ali", "veli", "TR");
         FeedRule r = new FeedRule("R1", u, eurusd, rc, rrr);
