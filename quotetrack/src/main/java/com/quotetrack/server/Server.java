@@ -1,19 +1,20 @@
 package com.quotetrack.server;
 
 import com.quotetrack.model.FeedRuleCollection;
-import com.quotetrack.server.socket.netty.EchoServer;
+import com.quotetrack.server.socket.netty.FeedServer;
 
 
 public class Server extends ActiveObject {
     private final FeedRuleCollection rules;
     private final FeedManager feedManager;
-    private final EchoServer feedServer;
+    private final FeedServer feedServer;
     
     public Server(int port, FeedRuleCollection rules) {
         super(true);
-        feedManager = new FeedManager(rules);
         this.rules = rules;
-        feedServer = new EchoServer(port);
+        this.feedManager = new FeedManager(rules);
+        this.feedServer = new FeedServer(port);
+        this.feedServer.addFeedListener(new FeedListenerImpl(feedManager));
     }
 
     public FeedRuleCollection getRules() {
@@ -27,8 +28,10 @@ public class Server extends ActiveObject {
     
     @Override
     public void stop() {
-        //super.stop();
+        System.out.println("Stopping server...");
+        super.stop();
         feedServer.BossGroup.shutdownGracefully();
         feedServer.WorkerGroup.shutdownGracefully();
+        System.out.println("Stopped server...");
     }
 }

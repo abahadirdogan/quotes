@@ -1,9 +1,9 @@
 package com.quotetrack.server.socket.netty;
 
-import com.quotetrack.model.Quote;
+import com.quotetrack.server.FeedListener;
 import com.quotetrack.server.Server;
 import io.netty.bootstrap.ServerBootstrap;
-import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
@@ -16,20 +16,21 @@ import io.netty.handler.codec.DelimiterBasedFrameDecoder;
 import io.netty.handler.codec.Delimiters;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
-import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class EchoServer {
+public class FeedServer {
     private final int port;
-    private final ConcurrentLinkedQueue<Quote> queue;
+    private final List<FeedListener> feedListeners;
     // Configure the server
     public EventLoopGroup BossGroup = new NioEventLoopGroup(1);
     public EventLoopGroup WorkerGroup = new NioEventLoopGroup();
         
-    public EchoServer(int port) {
+    public FeedServer(int port) {
         this.port = port;
-        this.queue = new ConcurrentLinkedQueue<>();
+        this.feedListeners = new ArrayList<>();
     }
     
     public void runServer() {
@@ -38,13 +39,15 @@ public class EchoServer {
             b.group(BossGroup, WorkerGroup)
              .channel(NioServerSocketChannel.class)
              .option(ChannelOption.SO_BACKLOG, 100)
+             .option(ChannelOption.SO_REUSEADDR, true)
              .handler(new LoggingHandler(LogLevel.INFO))
              .childHandler(new ChannelInitializer<SocketChannel>() {
                  @Override
                  public void initChannel(SocketChannel ch) throws Exception {
                      ChannelPipeline p = ch.pipeline();
-                     p.addLast(new DelimiterBasedFrameDecoder(1500, Delimiters.nulDelimiter()));
-                     p.addLast(new EchoServerHandler(queue));
+                     p.addLast(new DelimiterBasedFrameDecoder(1500, Delimiters.lineDelimiter()));
+                     p.addLast(new DelimiterBasedFrameDecoder(1500, Unpooled.wrappedBuffer("@|@".getBytes())));
+                     p.addLast(new FeedServerHandler(feedListeners));
                  }
              });
 
@@ -60,5 +63,9 @@ public class EchoServer {
             BossGroup.shutdownGracefully();
             WorkerGroup.shutdownGracefully();
         }
+    }
+    
+    public void addFeedListener(FeedListener feedListener) {
+        this.feedListeners.add(feedListener);
     }
 }

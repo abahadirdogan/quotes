@@ -5,7 +5,6 @@ import com.quotetrack.model.FeedRuleCollection;
 import com.quotetrack.model.Quote;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +22,7 @@ public class FeedManager {
     }
     
     public void putFeed(final Quote quote) {
+        System.out.println("Quote added: " + quote);
         quotes.put(quote.getSymbol(), quote);
     }
     
