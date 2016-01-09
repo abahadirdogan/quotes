@@ -22,11 +22,7 @@ class FeedServerHandler extends ChannelInboundHandlerAdapter {
         int readerIndex = buf.readerIndex();
         buf.getBytes(readerIndex, bytes);
         Quote q = Quote.parse(new String(bytes));
-        System.out.println("Quote=> " + q);
         feedListeners.stream().forEach((FeedListener l) -> l.feedReceived(q));
-        
-        ctx.write(msg);
-        ctx.flush();
     }
 
 }

@@ -13,6 +13,7 @@ public class FeedListenerImpl implements FeedListener {
     @Override
     public void feedReceived(Quote quote) {
         feedManager.putFeed(quote);
+        feedManager.checkRules(quote);
     }
     
 }

@@ -5,6 +5,8 @@
  */
 package com.quotetrack.server;
 
+import java.util.concurrent.Semaphore;
+
 /**
  *
  * @author bd
@@ -31,6 +33,7 @@ public abstract class ActiveObject implements Runnable {
         while (active) {
             task();
         }
+        System.out.println("Run loop finished");
     }
     
 }

@@ -8,6 +8,8 @@ import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.ChannelPipeline;
+import io.netty.channel.ChannelPromise;
+import io.netty.channel.DefaultChannelPromise;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
@@ -25,12 +27,14 @@ public class FeedServer {
     private final int port;
     private final List<FeedListener> feedListeners;
     // Configure the server
-    public EventLoopGroup BossGroup = new NioEventLoopGroup(1);
-    public EventLoopGroup WorkerGroup = new NioEventLoopGroup();
+    public EventLoopGroup BossGroup;
+    public EventLoopGroup WorkerGroup;
         
     public FeedServer(int port) {
         this.port = port;
         this.feedListeners = new ArrayList<>();
+        BossGroup = new NioEventLoopGroup(1);
+        WorkerGroup = new NioEventLoopGroup();
     }
     
     public void runServer() {

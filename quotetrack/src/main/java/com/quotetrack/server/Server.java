@@ -2,6 +2,7 @@ package com.quotetrack.server;
 
 import com.quotetrack.model.FeedRuleCollection;
 import com.quotetrack.server.socket.netty.FeedServer;
+import io.netty.util.concurrent.Future;
 
 
 public class Server extends ActiveObject {
@@ -28,10 +29,16 @@ public class Server extends ActiveObject {
     
     @Override
     public void stop() {
-        System.out.println("Stopping server...");
-        super.stop();
-        feedServer.BossGroup.shutdownGracefully();
-        feedServer.WorkerGroup.shutdownGracefully();
-        System.out.println("Stopped server...");
+        try {
+            System.out.println("Stopping server...");
+            super.stop();
+            Future<?> f = feedServer.BossGroup.shutdownGracefully();
+            f.syncUninterruptibly();
+            f = feedServer.WorkerGroup.shutdownGracefully();
+            f.syncUninterruptibly();
+            System.out.println("Stopped server...");
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 }
