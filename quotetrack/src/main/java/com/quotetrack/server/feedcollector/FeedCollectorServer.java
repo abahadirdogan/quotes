@@ -1,20 +1,24 @@
-package com.quotetrack.server;
+package com.quotetrack.server.feedcollector;
 
 import com.quotetrack.model.FeedRuleCollection;
-import com.quotetrack.server.socket.netty.FeedServer;
+import com.quotetrack.server.ActiveObject;
+import com.quotetrack.server.FeedListenerImpl;
+import com.quotetrack.server.FeedManager;
 import io.netty.util.concurrent.Future;
 
 
-public class Server extends ActiveObject {
+public class FeedCollectorServer extends ActiveObject {
     private final FeedRuleCollection rules;
     private final FeedManager feedManager;
     private final FeedServer feedServer;
+    private final ManagementServer managementServer;
     
-    public Server(int port, FeedRuleCollection rules) {
+    public FeedCollectorServer(int port, FeedRuleCollection rules) {
         super(true);
         this.rules = rules;
         this.feedManager = new FeedManager(rules);
         this.feedServer = new FeedServer(port);
+        this.managementServer = new ManagementServer(rules);
         this.feedServer.addFeedListener(new FeedListenerImpl(feedManager));
     }
 
@@ -25,6 +29,7 @@ public class Server extends ActiveObject {
     @Override
     public void task() {
         feedServer.runServer();
+        managementServer.runServer();
     }
     
     @Override

@@ -1,15 +1,13 @@
-package com.quotetrack.server.socket.netty;
+package com.quotetrack.server.feedcollector;
 
 import com.quotetrack.server.FeedListener;
-import com.quotetrack.server.Server;
+import com.quotetrack.server.feedcollector.FeedCollectorServer;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.ChannelPipeline;
-import io.netty.channel.ChannelPromise;
-import io.netty.channel.DefaultChannelPromise;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
@@ -26,6 +24,7 @@ import java.util.logging.Logger;
 public class FeedServer {
     private final int port;
     private final List<FeedListener> feedListeners;
+    private final String DELIMITER = "@|@";
     // Configure the server
     public EventLoopGroup BossGroup;
     public EventLoopGroup WorkerGroup;
@@ -50,7 +49,7 @@ public class FeedServer {
                  public void initChannel(SocketChannel ch) throws Exception {
                      ChannelPipeline p = ch.pipeline();
                      p.addLast(new DelimiterBasedFrameDecoder(1500, Delimiters.lineDelimiter()));
-                     p.addLast(new DelimiterBasedFrameDecoder(1500, Unpooled.wrappedBuffer("@|@".getBytes())));
+                     p.addLast(new DelimiterBasedFrameDecoder(1500, Unpooled.wrappedBuffer(DELIMITER.getBytes())));
                      p.addLast(new FeedServerHandler(feedListeners));
                  }
              });
@@ -61,7 +60,7 @@ public class FeedServer {
             // Wait until the server socket is closed
             f.channel().closeFuture().sync();
         } catch (InterruptedException ex) {
-            Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FeedCollectorServer.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             // Shut down all event loops to terminate all threads
             BossGroup.shutdownGracefully();

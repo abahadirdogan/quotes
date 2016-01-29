@@ -1,5 +1,5 @@
-package com.quotetrack.server;
-
+import com.quotetrack.server.feedcollector.FeedCollectorServer;
+import com.quotetrack.server.feedcollector.ShutdownThread;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -8,7 +8,7 @@ public class App {
     public static void main(String[] args) {
         App app = new App();
         try {
-            Server s = new Server(10001, null);
+            FeedCollectorServer s = new FeedCollectorServer(10001, null);
             app.attachShutDownHook(s);
             ExecutorService es = Executors.newFixedThreadPool(5);
             es.submit(s);
@@ -16,18 +16,9 @@ public class App {
         } catch (Exception e) {
             System.err.println(e.getMessage());
         }
-        /*ExecutorService es = Executors.newFixedThreadPool(5);
-         es.submit(s);
-         try {
-         Thread.sleep(1000);
-         } catch (InterruptedException ex) {
-         Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
-         }
-         s.stop();
-         es.shutdown();*/
     }
 
-    public void attachShutDownHook(Server server) {
+    public void attachShutDownHook(FeedCollectorServer server) {
         Runtime.getRuntime().addShutdownHook(new ShutdownThread(server));
         System.out.println("Shut Down Hook Attached.");
     }

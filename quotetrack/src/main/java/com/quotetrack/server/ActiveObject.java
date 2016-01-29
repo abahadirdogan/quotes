@@ -1,16 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.quotetrack.server;
 
-import java.util.concurrent.Semaphore;
-
-/**
- *
- * @author bd
- */
 public abstract class ActiveObject implements Runnable {
     private boolean active;
     

@@ -8,6 +8,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class FeedManager {
@@ -26,8 +27,8 @@ public class FeedManager {
         quotes.put(quote.getSymbol(), quote);
     }
     
-    public Quote getQuote(String symbol) {
-        return quotes.get(symbol);
+    public Optional<Quote> getQuote(String symbol) {
+        return Optional.ofNullable(quotes.get(symbol));
     }
     
     public void addFeedActionListener(FeedActionListener listener) {
@@ -39,7 +40,8 @@ public class FeedManager {
     }
 
     public void checkRules(final Quote quote) {
-        Collection<FeedRule> matchingRules = rules.getRulesBySymbol(quote.getSymbol()).stream().filter(r -> r.match(quote)).collect(Collectors.toList());
+        Collection<FeedRule> matchingRules = rules.getRulesBySymbol(quote.getSymbol()).stream()
+                .filter(r -> r.match(quote)).collect(Collectors.toList());
         for (FeedRule rule : matchingRules) {
             for (FeedActionListener actionListener : actionListeners) {
                 actionListener.handleAction(quote, rule);

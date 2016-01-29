@@ -1,4 +1,4 @@
-package com.quotetrack.server.socket.netty;
+package com.quotetrack.server.feedcollector;
 
 import com.quotetrack.server.FeedListener;
 import com.quotetrack.model.Quote;
