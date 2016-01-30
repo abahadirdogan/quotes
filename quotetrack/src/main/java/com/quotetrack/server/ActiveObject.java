@@ -20,7 +20,11 @@ public abstract class ActiveObject implements Runnable {
     @Override
     public void run() {
         while (active) {
-            task();
+            try {
+                task();
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
         }
         System.out.println("Run loop finished");
     }

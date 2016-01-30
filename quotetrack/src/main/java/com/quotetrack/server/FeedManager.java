@@ -4,11 +4,13 @@ import com.quotetrack.model.FeedRule;
 import com.quotetrack.model.FeedRuleCollection;
 import com.quotetrack.model.Quote;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class FeedManager {
@@ -29,6 +31,10 @@ public class FeedManager {
     
     public Optional<Quote> getQuote(String symbol) {
         return Optional.ofNullable(quotes.get(symbol));
+    }
+    
+    public Set<String> getQuoteSymbols() {
+        return quotes.keySet();
     }
     
     public void addFeedActionListener(FeedActionListener listener) {

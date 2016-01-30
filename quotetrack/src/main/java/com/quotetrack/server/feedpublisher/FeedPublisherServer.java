@@ -6,14 +6,17 @@ import com.quotetrack.server.FeedManager;
 
 public class FeedPublisherServer extends ActiveObject {
     private final FeedManager feedManager;
+    private final WebSocketServer websocketServer;
 
     public FeedPublisherServer(int port, FeedRuleCollection rules) {
         super(true);
         this.feedManager = new FeedManager(rules);
+        this.websocketServer = new WebSocketServer(feedManager);
     }
 
     @Override
     public void task() {
+        websocketServer.runServer();
     }
     
     @Override
